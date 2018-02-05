@@ -14,6 +14,7 @@ class Browser extends React.Component {
         }
         this.handleSubmission = this.handleSubmission.bind(this);
         this.handleForward = this.handleForward.bind(this);
+        this.handleBackward = this.handleBackward.bind(this);
     }
     
     handleSubmission (e) {
@@ -42,12 +43,24 @@ class Browser extends React.Component {
         }
     }
 
+    handleBackward() {
+        const back = this.state.back; 
+        const current = this.state.current; 
+        const forward = this.state.forward;
+        if (current) {
+            back.push(current);
+            this.setState({
+                current: forward.pop(),
+            })
+        }
+    }
+
     render () {
         return (
             <div>
                 <h1>Browser</h1>
                 <input type='text' onKeyUp={this.handleSubmission} placeholder='type here'/> 
-                <button >{'<'}</button>
+                <button onClick={this.handleBackward}>{'<'}</button>
                 <button onClick={this.handleForward}>{'>'}</button>
                 <div className='back'>
                     <h3>Back</h3>
