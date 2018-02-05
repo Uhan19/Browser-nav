@@ -9,25 +9,37 @@ class Browser extends React.Component {
         super(props)
         this.state = { 
             back: [], 
-            current: '(none)',
+            current: '',
             forward: []
         }
-        this.handleSubmission = this.handleSubmission.bind(this)
+        this.handleSubmission = this.handleSubmission.bind(this);
+        this.handleForward = this.handleForward.bind(this);
     }
     
     handleSubmission (e) {
         const back = this.state.back; 
-        if(e.key === 'Enter'){
+        const current = this.state.current;
+        if(e.key === 'Enter') {
+            if (current) {
+                back.push(current)
+            }
             this.setState({
                 current: e.target.value,
                 forward: []
             });
-            back.push(e.target.value)
         }
     }
 
-    handleForward (e) {
-        
+    handleForward() {
+        const back = this.state.back; 
+        const current = this.state.current; 
+        const forward = this.state.forward; 
+        if (current) {
+            forward.push(current)
+            this.setState({
+                current: back.pop(),
+            })
+        }
     }
 
     render () {
@@ -36,7 +48,7 @@ class Browser extends React.Component {
                 <h1>Browser</h1>
                 <input type='text' onKeyUp={this.handleSubmission} placeholder='type here'/> 
                 <button >{'<'}</button>
-                <button >{'>'}</button>
+                <button onClick={this.handleForward}>{'>'}</button>
                 <div className='back'>
                     <h3>Back</h3>
                     <Back back={this.state.back}/>
